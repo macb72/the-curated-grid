@@ -1,0 +1,65 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+	description: string;
+	/** Absolute or site-relative path for Open Graph image, e.g. /og-default.png */
+	image?: string;
+	/** Override canonical URL (defaults to current page from Astro.url) */
+	canonicalURL?: URL | string;
+	noindex?: boolean;
+	/** Open Graph type; use "article" for review pages */
+	ogType?: "website" | "article";
+}
+
+const {
+	title,
+	description,
+	image = "/og-default.svg",
+	canonicalURL,
+	noindex = false,
+	ogType = "website",
+} = Astro.props;
+
+const resolvedCanonical =
+	typeof canonicalURL === "string"
+		? new URL(canonicalURL, Astro.site ?? Astro.url)
+		: (canonicalURL ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url));
+
+const ogImage = image.startsWith("http")
+	? image
+	: new URL(image, Astro.site ?? Astro.url).href;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={resolvedCanonical.href} />
+
+		<meta property="og:type" content={ogType} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={resolvedCanonical.href} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:site_name" content="The Curated Grid" />
+		<meta property="og:locale" content="en_US" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	</head>
+	<body class="min-h-dvh font-sans">
+		<slot />
+	</body>
+</html>

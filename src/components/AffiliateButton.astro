@@ -1,0 +1,53 @@
+---
+interface Props {
+	href: string;
+	label?: string;
+	rel?: string;
+	class?: string;
+}
+
+const {
+	href,
+	label = "Check price on Amazon",
+	rel = "nofollow sponsored noopener noreferrer",
+	class: className,
+} = Astro.props;
+---
+
+<a
+	href={href}
+	target="_blank"
+	rel={rel}
+	class:list={[
+		"group inline-flex items-center justify-center gap-2.5 rounded-lg px-5 py-3 text-sm font-medium tracking-wide",
+		"bg-gradient-to-b from-amber-500 to-amber-600 text-zinc-950 shadow-md shadow-amber-500/25",
+		"ring-1 ring-amber-400/80 ring-inset dark:from-amber-400 dark:to-amber-500 dark:ring-amber-300/50",
+		"transition-[transform,box-shadow,filter] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/35 hover:brightness-[1.02] active:translate-y-0",
+		className,
+	]}
+>
+	<svg
+		class="size-5 shrink-0 opacity-95"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="1.75"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+	>
+		<path d="M4 7h16M6 7l2 12h8l2-12" />
+		<path d="M9 7V5a3 3 0 0 1 6 0v2" />
+	</svg>
+	<span>{label}</span>
+	<svg
+		class="size-4 shrink-0 opacity-70 transition-transform duration-200 group-hover:translate-x-0.5"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2"
+		aria-hidden="true"
+	>
+		<path d="M7 17L17 7M17 7H9M17 7v8" />
+	</svg>
+</a>
