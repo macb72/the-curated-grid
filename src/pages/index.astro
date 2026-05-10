@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/layout.astro";
 import AffiliateButton from "../components/AffiliateButton.astro";
+import { base, withBase } from "../utils/base";
 import { getCollection } from "astro:content";
 
 const reviews = await getCollection("reviews");
@@ -27,7 +28,7 @@ const pageDesc =
 >
 	<div class="border-b border-zinc-200/80 bg-white/70 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/70">
 		<header class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-5 sm:px-6 lg:px-8">
-			<a href="/" class="font-mono text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
+			<a href={base} class="font-mono text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
 				<span class="text-zinc-500 dark:text-zinc-400">the</span>
 				<span class="font-semibold">curated</span>
 				<span class="text-zinc-500 dark:text-zinc-400">.grid</span>
@@ -35,7 +36,7 @@ const pageDesc =
 			<nav aria-label="Main" class="flex items-center gap-6 text-sm">
 				<a
 					class="text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
-					href="/#reviews"
+					href={`${base}#reviews`}
 				>
 					Latest reviews
 				</a>
@@ -67,7 +68,7 @@ const pageDesc =
 					<div class="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center">
 						<AffiliateButton href={potw.data.affiliateUrl} />
 						<a
-							href={`/reviews/${potw.data.slug}/`}
+							href={withBase(`reviews/${potw.data.slug}/`)}
 							class="font-mono text-sm text-teal-700 underline-offset-4 hover:text-teal-600 hover:underline dark:text-teal-400 dark:hover:text-teal-300"
 						>
 							Read full review →
@@ -106,7 +107,7 @@ const pageDesc =
 							</div>
 							<h3 class="mt-4 text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
 								<a
-									href={`/reviews/${r.data.slug}/`}
+									href={withBase(`reviews/${r.data.slug}/`)}
 									class="transition-colors hover:text-teal-700 dark:hover:text-teal-400"
 								>
 									{r.data.title}
@@ -118,7 +119,7 @@ const pageDesc =
 							<div class="mt-6 flex flex-wrap items-center gap-4">
 								<AffiliateButton href={r.data.affiliateUrl} class="!px-4 !py-2.5 !text-xs" />
 								<a
-									href={`/reviews/${r.data.slug}/`}
+									href={withBase(`reviews/${r.data.slug}/`)}
 									class="text-sm font-medium text-zinc-700 underline-offset-4 hover:underline dark:text-zinc-300"
 								>
 									Review

@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { withBase } from "../utils/base";
 
 interface Props {
 	title: string;
@@ -22,14 +23,18 @@ const {
 	ogType = "website",
 } = Astro.props;
 
+const siteRoot = Astro.site ?? Astro.url;
+const siteWithBase = new URL(import.meta.env.BASE_URL, siteRoot);
+
 const resolvedCanonical =
 	typeof canonicalURL === "string"
-		? new URL(canonicalURL, Astro.site ?? Astro.url)
-		: (canonicalURL ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url));
+		? new URL(canonicalURL, siteRoot)
+		: (canonicalURL ??
+			new URL(Astro.url.pathname + Astro.url.search, siteRoot.origin));
 
 const ogImage = image.startsWith("http")
 	? image
-	: new URL(image, Astro.site ?? Astro.url).href;
+	: new URL(image.replace(/^\/+/, ""), siteWithBase).href;
 ---
 
 <!doctype html>
@@ -57,7 +62,7 @@ const ogImage = image.startsWith("http")
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImage} />
 
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
 	</head>
 	<body class="min-h-dvh font-sans">
 		<slot />

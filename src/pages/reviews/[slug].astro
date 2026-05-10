@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/layout.astro";
 import AffiliateButton from "../../components/AffiliateButton.astro";
+import { base } from "../../utils/base";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -21,7 +22,9 @@ const { Content } = await render(entry);
 const title = `${entry.data.title} — Review | The Curated Grid`;
 const image = entry.data.image ?? "/og-default.svg";
 
-const canonical = new URL(`/reviews/${entry.data.slug}/`, Astro.site ?? Astro.url);
+const siteRoot = Astro.site ?? Astro.url;
+const siteWithBase = new URL(import.meta.env.BASE_URL, siteRoot);
+const canonical = new URL(`reviews/${entry.data.slug}/`, siteWithBase);
 
 const fmt = new Intl.DateTimeFormat("en-US", {
 	month: "long",
@@ -42,7 +45,7 @@ const stars =
 >
 	<div class="border-b border-zinc-200/80 bg-white/70 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/70">
 		<header class="mx-auto flex max-w-3xl items-center justify-between gap-6 px-4 py-5 sm:px-6 lg:px-8">
-			<a href="/" class="font-mono text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
+			<a href={base} class="font-mono text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
 				<span class="text-zinc-500 dark:text-zinc-400">←</span> curated.grid
 			</a>
 		</header>
